@@ -1,8 +1,8 @@
 FROM node:9.1-alpine
 MAINTAINER raul.requero@vizzuality.com
 
-ENV NAME doc-writter
-ENV USER doc-writter
+ENV NAME doc-writer
+ENV USER doc-writer
 
 RUN apk update && apk upgrade && \
     apk add --no-cache --update bash git openssh python alpine-sdk

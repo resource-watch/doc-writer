@@ -1,6 +1,6 @@
 {
     "logger": {
-        "name": "doc-writter-test",
+        "name": "doc-writer-test",
         "level": "debug",
         "toFile": false,
         "dirLogFile": null
