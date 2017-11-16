@@ -1,7 +1,8 @@
+
 develop:
   extends:
     file: base.yml
     service: base
   command: develop
   volumes:
-    - ./app:/opt/doc-writter/app
+    - ./app:/opt/doc-writer/app
