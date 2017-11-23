@@ -1,6 +1,6 @@
 const logger = require('logger');
 const config = require('config');
-const amqp = require('amqplib/callback_api');
+const amqp = require('amqplib');
 const writerService = require('services/writer.service');
 const ElasticError = require('errors/elastic.error');
 
@@ -35,7 +35,8 @@ class DataQueueService {
         this.channel.prefetch(1);
         logger.info(` [*] Waiting for messages in ${q}`);
         this.channel.consume(q, this.consume.bind(this), {
-            noAck: false
+            noAck: false,
+
         });
     }
 
