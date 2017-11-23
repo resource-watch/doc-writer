@@ -13,29 +13,29 @@ class DataQueueService {
 
     constructor() {
         logger.info(`Connecting to queue ${DATA_QUEUE}`);
-        amqp.connect(config.get('rabbitmq.url'), (err, conn) => {
-            if (err) {
+        try {
+            this.init().then(() => {
+                logger.info('Connected');
+            }, (err) => {
                 logger.error(err);
                 process.exit(1);
-            }
-            conn.createChannel((err, ch) => {
-                if (err) {
-                    logger.error(err);
-                    process.exit(1);
-                }
-                const q = DATA_QUEUE;
-                this.channel = ch;
-                ch.assertQueue(q, {
-                    durable: true,
-                    maxLength: 10
-                });
-                ch.prefetch(1);
-
-                logger.info(` [*] Waiting for messages in ${q}`);
-                ch.consume(q, this.consume.bind(this), {
-                    noAck: false
-                });
             });
+        } catch (err) {
+            logger.error(err);
+        }
+    }
+
+    async init() {
+        const conn = await amqp.connect(config.get('rabbitmq.url'));
+        this.channel = await conn.createConfirmChannel();
+        const q = DATA_QUEUE;
+        this.channel.assertQueue(q, {
+            durable: true
+        });
+        this.channel.prefetch(1);
+        logger.info(` [*] Waiting for messages in ${q}`);
+        this.channel.consume(q, this.consume.bind(this), {
+            noAck: false
         });
     }
 
