@@ -1,7 +1,4 @@
 {
-    "service": {
-        "port": "PORT"
-    },
     "rabbitmq":{
         "url": "RABBITMQ_URL"
     },
