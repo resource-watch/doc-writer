@@ -26,15 +26,33 @@ class ElasticService {
         }, 3000);
     }
 
-    async saveBulk(data) {
+    async saveBulk(index, data) {
+        
+        const exists = await new Promise((resolve, reject) => {
+            logger.debug('Checking if exist index');
+            this.client.indices.exists({ index }, function (err, res) {
+                logger.info('Response', res);
+                if (err) {
+                    logger.error(err);
+                    reject(err);
+                    return;
+                }
+                resolve(res);
+            });
+        });
+        if (!exists) {
+            logger.error('Index not exists');
+            return false;
+        }
         return new Promise((resolve, reject) => {
             logger.debug('Sending data in elastic');
             this.client.bulk({ body: data }, function (err, res) {
                 if (err) {
+                    logger.error(err);
                     reject(new ElasticError(err));
                     return;
                 }
-                resolve(res);
+                resolve(true);
             });
         });
     }

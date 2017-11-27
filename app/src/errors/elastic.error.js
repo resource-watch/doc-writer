@@ -8,4 +8,5 @@ class ElasticError extends Error {
 
 }
 
+
 module.exports = ElasticError;
