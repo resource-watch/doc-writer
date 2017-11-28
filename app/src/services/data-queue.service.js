@@ -42,9 +42,9 @@ class DataQueueService {
 
     async consume(msg) {
         try {
-            logger.debug('Message received', msg.content.toString());
+            logger.debug('Message received');
             const message = JSON.parse(msg.content.toString());
-            logger.debug('message content', message);
+            
             await writerService.processMessage(message);
             this.channel.ack(msg);
             logger.info('Message processed successfully');
