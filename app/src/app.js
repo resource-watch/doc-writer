@@ -1,2 +1,5 @@
 const logger = require('logger');
-const config = require('config');
+
+logger.debug('Initializing doc-writer');
+require('services/data-queue.service');
+require('services/status-queue.service');
