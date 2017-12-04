@@ -52,10 +52,17 @@ class ElasticService {
                     reject(new ElasticError(err));
                     return;
                 }
-                if(res && res.errors) {
-                    console.log(JSON.stringify(res));
+
+                let itemWithError = null;
+                if (res.errors) {
+                    itemWithError = res.items.find((item) => {
+                        return item && item.index && item.index.status === 400;
+                    });
                 }
-                resolve(true);
+                resolve({
+                    withErrors: res.errors,
+                    detail: itemWithError ? JSON.stringify(itemWithError.index.error) : '';
+                });
             });
         });
     }
