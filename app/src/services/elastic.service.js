@@ -27,7 +27,7 @@ class ElasticService {
     }
 
     async saveBulk(index, data) {
-        
+
         const exists = await new Promise((resolve, reject) => {
             logger.debug('Checking if exist index');
             this.client.indices.exists({ index }, function (err, res) {
@@ -51,6 +51,9 @@ class ElasticService {
                     logger.error(err);
                     reject(new ElasticError(err));
                     return;
+                }
+                if(res && res.errors) {
+                    console.log(JSON.stringify(res));
                 }
                 resolve(true);
             });
