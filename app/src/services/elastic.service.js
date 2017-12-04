@@ -61,7 +61,7 @@ class ElasticService {
                 }
                 resolve({
                     withErrors: res.errors,
-                    detail: itemWithError ? JSON.stringify(itemWithError.index.error) : '';
+                    detail: itemWithError ? JSON.stringify(itemWithError.index.error) : ''
                 });
             });
         });
