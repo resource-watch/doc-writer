@@ -19,9 +19,9 @@
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
-    "mocha": "^3.2.0",
+    "mocha": "^5.2.0",
     "nock": "^9.0.2",
-    "nodemon": "^1.12.1",
+    "nodemon": "^1.18.9",
     "should": "^11.2.1",
     "superagent": "^3.3.1",
     "supertest": "^3.0.0"
@@ -31,7 +31,7 @@
     "bluebird": "^3.4.7",
     "bunyan": "^1.8.5",
     "config": "^1.21.0",
-    "doc-importer-messages": "git+http://github.com/resource-watch/doc-importer-messages.git#master",
+    "rw-doc-importer-messages": "^1.0.0",
     "elasticsearch": "^14.0.0"
   }
 }
