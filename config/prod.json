@@ -1,7 +1,7 @@
 {
     "logger": {
         "name": "doc-writer",
-        "level": "warn",
+        "level": "debug",
         "toFile": false,
         "dirLogFile": null
     }
