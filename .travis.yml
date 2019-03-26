@@ -1,0 +1,26 @@
+language: node_js
+services:
+  - rabbitmq
+node_js:
+  - "9.1"
+  - "11"
+cache:
+  directories:
+  - "node_modules"
+env:
+  global:
+    - CC_TEST_REPORTER_ID=b20424bf38e9d64206d37fc2633b573f696f7b7e423cee11d241ec12a2bf27cc
+    - NODE_ENV=test
+    - ELASTIC_URL=127.0.0.1:9000
+    - RABBITMQ_URL=amqp://0.0.0.0:5672
+    - HOST_IP=127.0.0.1
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+  - npm test
+  - npm run coverage
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

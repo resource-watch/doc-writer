@@ -1,8 +1,11 @@
-
-develop:
-  extends:
-    file: base.yml
-    service: base
-  command: develop
-  volumes:
-    - ./app:/opt/doc-writer/app
+version: "3"
+services:
+  develop:
+    build: .
+    container_name: doc-writer
+    environment:
+      NODE_PATH: app/src
+      NODE_ENV: develop
+    command: develop
+    volumes:
+      - ./app:/opt/doc-writer/app

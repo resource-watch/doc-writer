@@ -1,11 +1,15 @@
 {
-     "logger": {
-        "name": "doc-writer-DEV",
-        "level": "debug",
-        "toFile": false,
-        "dirLogFile": null
-    },
-    "service": {
-        "name": "Doc Writter"
-    }
+  "logger": {
+    "name": "doc-writer-DEV",
+    "level": "debug",
+    "toFile": false,
+    "dirLogFile": null
+  },
+  "service": {
+    "name": "Doc Writer"
+  },
+  "queues": {
+    "data": "DOC-DATA",
+    "status": "DOC-STATUS"
+  }
 }

@@ -1,8 +1,18 @@
-test:
-  extends:
-    file: base.yml
-    service: base
-  container_name: doc-writer-test
-  environment:
-    NODE_ENV: test
-  command: test
+version: "3"
+services:
+  test:
+    build: .
+    container_name: doc-writer-test
+    environment:
+      NODE_PATH: app/src
+      NODE_ENV: test
+      ELASTIC_URL: elasticsearch:9200
+      RABBITMQ_URL: amqp://rabbitmq:5672
+    command: test
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672"

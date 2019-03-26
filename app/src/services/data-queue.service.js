@@ -2,13 +2,13 @@ const logger = require('logger');
 const QueueService = require('services/queue.service');
 const writerService = require('services/writer.service');
 const ElasticError = require('errors/elastic.error');
-const { DATA_QUEUE } = require('app.constants');
+const config = require('config');
 
 
 class DataQueueService extends QueueService {
 
     constructor() {
-        super(DATA_QUEUE, true);
+        super(config.get('queues.data'), true);
     }
 
     async consume(msg) {
