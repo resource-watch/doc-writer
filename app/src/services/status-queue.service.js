@@ -2,15 +2,11 @@ const logger = require('logger');
 const config = require('config');
 const amqp = require('amqplib');
 const docImporter = require('rw-doc-importer-messages');
-const {
-    STATUS_QUEUE
-} = require('app.constants');
-
 
 class StatusQueueService {
 
     constructor() {
-        logger.info(`Connecting to queue ${STATUS_QUEUE}`);
+        logger.info(`Connecting to queue ${config.get('queues.status')}`);
         try {
             this.init().then(() => {
                 logger.info('Connected');
@@ -33,12 +29,12 @@ class StatusQueueService {
             let numTries = 0;
             const interval = setInterval(async () => {
                 try {
-                    numTries++;
+                    numTries += 1;
                     logger.info('Sending message', msg);
-                    const data = await this.channel.assertQueue(STATUS_QUEUE, {
+                    await this.channel.assertQueue(config.get('queues.status'), {
                         durable: true
                     });
-                    this.channel.sendToQueue(STATUS_QUEUE, Buffer.from(JSON.stringify(msg)));
+                    this.channel.sendToQueue(config.get('queues.status'), Buffer.from(JSON.stringify(msg)));
                     clearInterval(interval);
                     resolve();
                 } catch (err) {

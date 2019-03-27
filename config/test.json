@@ -1,8 +1,12 @@
 {
-    "logger": {
-        "name": "doc-writer-test",
-        "level": "debug",
-        "toFile": false,
-        "dirLogFile": null
-    }
+  "logger": {
+    "name": "doc-writer-test",
+    "level": "debug",
+    "toFile": false,
+    "dirLogFile": null
+  },
+  "queues": {
+    "data": "DOC-DATA-TEST",
+    "status": "DOC-STATUS-TEST"
+  }
 }
