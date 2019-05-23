@@ -27,7 +27,7 @@ class ElasticService {
     async saveBulk(index, data) {
 
         const exists = await new Promise((resolve, reject) => {
-            logger.debug('Checking if exist index');
+            logger.debug(`Checking if index ${index} exists`);
             this.client.indices.exists({ index }, (err, res) => {
                 logger.info('Response', res);
                 if (err) {
@@ -39,11 +39,11 @@ class ElasticService {
             });
         });
         if (!exists) {
-            logger.error('Index not exists');
+            logger.error(`Index ${index} does not exist`);
             return false;
         }
         return new Promise((resolve, reject) => {
-            logger.debug('Sending data in elastic');
+            logger.debug('Sending data to Elasticsearch');
             this.client.bulk({ body: data }, (err, res) => {
                 if (err) {
                     logger.error(err);

@@ -11,7 +11,7 @@ class WriterService {
             logger.debug('Not saved correctly');
             return;
         }
-        await statusQueueService.sendWriteCorrect(message.taskId, response.withErrors, response.detail);
+        await statusQueueService.sendWriteCorrect(message.taskId, message.index, response.withErrors, response.detail);
     }
 
 }
