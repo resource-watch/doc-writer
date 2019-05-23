@@ -3,7 +3,7 @@ services:
   - rabbitmq
 node_js:
   - "9.1"
-  - "11"
+  - "node"
 cache:
   directories:
   - "node_modules"
