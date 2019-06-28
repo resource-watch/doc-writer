@@ -48,17 +48,11 @@ class StatusQueueService {
         });
     }
 
-    async sendIndexCreated(taskId) {
-        logger.debug('Sending index created message of taskId', taskId);
-        await this.sendMessage(docImporter.status.createMessage(docImporter.status.MESSAGE_TYPES.STATUS_INDEX_CREATED, {
-            taskId
-        }));
-    }
-
-    async sendWriteCorrect(taskId, withErrors, detail) {
-        logger.debug('Sending write correct message of taskId', taskId, withErrors, detail);
+    async sendWriteCorrect(taskId, index, withErrors, detail) {
+        logger.debug('Sending write correct message of taskId', taskId, index, withErrors, detail);
         await this.sendMessage(docImporter.status.createMessage(docImporter.status.MESSAGE_TYPES.STATUS_WRITTEN_DATA, {
             taskId,
+            index,
             withErrors,
             detail
         }));
