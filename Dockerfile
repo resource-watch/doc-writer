@@ -1,5 +1,5 @@
-FROM node:9.1-alpine
-MAINTAINER raul.requero@vizzuality.com
+FROM node:12.11-alpine
+MAINTAINER info@vizzuality.com
 
 ENV NAME doc-writer
 ENV USER doc-writer
