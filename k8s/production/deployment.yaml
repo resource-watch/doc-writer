@@ -21,6 +21,8 @@ spec:
         args:
           - start
         env:
+          - name: PORT
+            value: "7400"
           - name: NODE_ENV
             value: prod
           - name: NODE_PATH
@@ -35,5 +37,24 @@ spec:
                 secretKeyRef:
                   name: dbsecrets
                   key: RABBITMQ_URI
+        ports:
+            - containerPort: 7400
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthcheck
+            port: 7400
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 15
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthcheck
+            port: 7400
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 15
 
       restartPolicy: Always
