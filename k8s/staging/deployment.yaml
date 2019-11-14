@@ -10,7 +10,6 @@ spec:
     metadata:
       labels:
         name: {name}
-        role: doc-writer
     spec:
       containers:
       - name: {name}
@@ -61,15 +60,5 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 5
           periodSeconds: 15
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - {name}
-              topologyKey: "kubernetes.io/hostname"
 
       restartPolicy: Always
