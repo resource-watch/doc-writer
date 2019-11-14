@@ -36,6 +36,8 @@
     "grunt-mocha-test": "^0.13.3",
     "grunt-notify": "^0.4.5",
     "grunt-simple-nyc": "^3.0.0",
+    "husky": ">=1",
+    "lint-staged": ">=8",
     "load-grunt-tasks": "^5.1.0",
     "mocha": "^6.2.1",
     "nock": "^11.4.0",
@@ -47,7 +49,18 @@
     "bluebird": "^3.4.7",
     "bunyan": "^1.8.5",
     "config": "^1.21.0",
-    "rw-doc-importer-messages": "^1.2.2",
-    "elasticsearch": "^14.0.0"
+    "elasticsearch": "^14.0.0",
+    "rw-doc-importer-messages": "^1.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
