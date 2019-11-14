@@ -4,7 +4,7 @@ services:
     build: .
     container_name: doc-writer-test
     environment:
-      PORT: 7450
+      PORT: 7400
       NODE_PATH: app/src
       NODE_ENV: test
       ELASTIC_URL: elasticsearch:9200
