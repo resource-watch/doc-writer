@@ -45,6 +45,7 @@ class QueueService {
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     consume() {
 
     }

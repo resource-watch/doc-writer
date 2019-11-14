@@ -53,9 +53,7 @@ class ElasticService {
 
                 let itemWithError = null;
                 if (res.errors) {
-                    itemWithError = res.items.find((item) => {
-                        return item && item.index && item.index.status === 400;
-                    });
+                    itemWithError = res.items.find(item => item && item.index && item.index.status === 400);
                 }
                 resolve({
                     withErrors: res.errors,
