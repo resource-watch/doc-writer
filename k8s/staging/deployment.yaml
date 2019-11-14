@@ -49,7 +49,7 @@ spec:
             scheme: HTTP
             path: /healthcheck
             port: 7400
-          initialDelaySeconds: 15
+          initialDelaySeconds: 30
           timeoutSeconds: 5
           periodSeconds: 15
         livenessProbe:
@@ -58,7 +58,7 @@ spec:
             path: /healthcheck
             port: 7400
           failureThreshold: 3
-          initialDelaySeconds: 15
+          initialDelaySeconds: 30
           timeoutSeconds: 5
           periodSeconds: 15
       affinity:
@@ -69,7 +69,7 @@ spec:
                   - key: role
                     operator: In
                     values:
-                      - doc-writer
+                      - {name}
               topologyKey: "kubernetes.io/hostname"
 
       restartPolicy: Always
