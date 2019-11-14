@@ -8,6 +8,7 @@ const elasticUrl = config.get('elastic.url');
 class ElasticService {
 
     constructor() {
+        logger.info(`Connecting to Elasticsearch on http://${elasticUrl}`);
         this.client = new Client({
             node: `http://${elasticUrl}`,
             log: 'error'
