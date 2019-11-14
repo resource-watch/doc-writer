@@ -16,6 +16,7 @@ class ElasticService {
         setInterval(() => {
             this.client.ping({}, (error) => {
                 if (error) {
+                    logger.error(error);
                     logger.error('Elasticsearch cluster is down!');
                     process.exit(1);
                 }
