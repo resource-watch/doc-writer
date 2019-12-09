@@ -44,7 +44,7 @@ class ElasticService {
         }
         return new Promise((resolve, reject) => {
             logger.debug('Sending data to Elasticsearch');
-            this.client.bulk({ body: data }, (err, res) => {
+            this.client.bulk({ body: data, timeout: '90s' }, (err, res) => {
                 if (err) {
                     logger.error(err);
                     reject(new ElasticError(err));
