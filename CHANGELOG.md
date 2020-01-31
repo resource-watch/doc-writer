@@ -1,4 +1,6 @@
-#14/11/2019
+# v1.0.0
+
+## 14/11/2019
 - Replace ES library to match other API MSs
 - Set CPU and memory quotas on k8s config
 - Added liveliness and readiness probes to k8s config
