@@ -1,5 +1,5 @@
 const logger = require('logger');
-const elasticsearch = require('elasticsearch');
+const { Client } = require('@elastic/elasticsearch');
 const config = require('config');
 const ElasticError = require('errors/elastic.error');
 
@@ -8,15 +8,15 @@ const elasticUrl = config.get('elastic.url');
 class ElasticService {
 
     constructor() {
-        this.client = new elasticsearch.Client({
-            host: elasticUrl,
+        logger.info(`Connecting to Elasticsearch on http://${elasticUrl}`);
+        this.client = new Client({
+            node: `http://${elasticUrl}`,
             log: 'error'
         });
         setInterval(() => {
-            this.client.ping({
-                requestTimeout: 10000
-            }, (error) => {
+            this.client.ping({}, (error) => {
                 if (error) {
+                    logger.error(error);
                     logger.error('Elasticsearch cluster is down!');
                     process.exit(1);
                 }
@@ -44,7 +44,7 @@ class ElasticService {
         }
         return new Promise((resolve, reject) => {
             logger.debug('Sending data to Elasticsearch');
-            this.client.bulk({ body: data }, (err, res) => {
+            this.client.bulk({ body: data, timeout: '90s' }, (err, res) => {
                 if (err) {
                     logger.error(err);
                     reject(new ElasticError(err));
@@ -53,12 +53,10 @@ class ElasticService {
 
                 let itemWithError = null;
                 if (res.errors) {
-                    itemWithError = res.items.find((item) => {
-                        return item && item.index && item.index.status === 400;
-                    });
+                    itemWithError = res.items.find(item => item && item.index && item.index.status === 400);
                 }
                 resolve({
-                    withErrors: res.errors,
+                    withErrors: res.errors || false,
                     detail: itemWithError ? JSON.stringify(itemWithError.index.error) : ''
                 });
             });

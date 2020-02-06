@@ -10,7 +10,6 @@ spec:
     metadata:
       labels:
         name: {name}
-        role: doc-writer
     spec:
       containers:
       - name: {name}
@@ -18,11 +17,16 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            memory: "0Mi"
-            cpu: "0m"
+            cpu: "0.5"
+            memory: "256M"
+          limits:
+            cpu: "1"
+            memory: "512M"
         args:
           - start
         env:
+          - name: PORT
+            value: "7400"
           - name: NODE_ENV
             value: staging
           - name: NODE_PATH
@@ -37,15 +41,24 @@ spec:
                 secretKeyRef:
                   name: dbsecrets
                   key: RABBITMQ_URI
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - doc-writer
-              topologyKey: "kubernetes.io/hostname"
+        ports:
+            - containerPort: 7400
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthcheck
+            port: 7400
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          periodSeconds: 15
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthcheck
+            port: 7400
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          periodSeconds: 15
 
       restartPolicy: Always
