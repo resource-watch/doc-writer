@@ -1,4 +1,3 @@
-const nock = require('nock');
 const { getTestServer } = require('./test-server');
 
 let requester;
@@ -18,14 +17,5 @@ describe('GET healthcheck', () => {
 
         response.status.should.equal(200);
         response.body.should.be.an('object').and.have.property('uptime');
-    });
-
-    afterEach(() => {
-        if (!nock.isDone()) {
-            const pendingMocks = nock.pendingMocks();
-            if (pendingMocks.length > 1) {
-                throw new Error(`Not all nock interceptors were used: ${pendingMocks}`);
-            }
-        }
     });
 });

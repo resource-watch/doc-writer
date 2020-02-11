@@ -13,7 +13,7 @@ const sleep = require('sleep');
 const { getTestServer } = require('./test-server');
 
 chai.use(chaiMatch);
-const should = chai.should();
+chai.should();
 
 let requester;
 let rabbitmqConnection = null;
@@ -48,10 +48,6 @@ describe('DATA handling process', () => {
         channel = await rabbitmqConnection.createConfirmChannel();
         await channel.assertQueue(config.get('queues.status'));
 
-        nock(`http://${process.env.ELASTIC_URL}`)
-            .head('/')
-            .reply(200);
-
         requester = await getTestServer();
     });
 
@@ -72,7 +68,7 @@ describe('DATA handling process', () => {
             .reply(200);
 
         nock(`http://${process.env.ELASTIC_URL}`)
-            .post('/_bulk', fs.readFileSync(path.join(__dirname, 'elasticsearch-bulk.txt')).toString())
+            .post('/_bulk?timeout=90s', fs.readFileSync(path.join(__dirname, 'elasticsearch-bulk.txt')).toString())
             .reply(200, {
                 took: 73,
                 errors: false,
@@ -199,15 +195,9 @@ describe('DATA handling process', () => {
 
         await channel.sendToQueue(config.get('queues.data'), Buffer.from(JSON.stringify(message)));
 
-        // Give the code 3 seconds to do its thing
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        let expectedStatusQueueMessageCount = 1;
 
-        const postStatusQueueStatus = await channel.assertQueue(config.get('queues.status'));
-        postStatusQueueStatus.messageCount.should.equal(1);
-        const postDataQueueStatus = await channel.assertQueue(config.get('queues.data'));
-        postDataQueueStatus.messageCount.should.equal(0);
-
-        const validateStatusQueueMessages = async (msg) => {
+        const validateStatusQueueMessages = resolve => async (msg) => {
             const content = JSON.parse(msg.content.toString());
 
             content.should.have.property('id');
@@ -217,12 +207,20 @@ describe('DATA handling process', () => {
             content.should.have.property('withErrors').and.equal(false);
 
             await channel.ack(msg);
+
+            expectedStatusQueueMessageCount -= 1;
+
+            if (expectedStatusQueueMessageCount < 0) {
+                throw new Error(`Unexpected message count - expectedStatusQueueMessageCount:${expectedStatusQueueMessageCount}`);
+            }
+
+            if (expectedStatusQueueMessageCount === 0) {
+                resolve();
+            }
         };
 
-        await channel.consume(config.get('queues.status'), validateStatusQueueMessages);
-
-        process.on('unhandledRejection', (error) => {
-            should.fail(error);
+        return new Promise((resolve) => {
+            channel.consume(config.get('queues.status'), validateStatusQueueMessages(resolve));
         });
     });
 
@@ -231,10 +229,6 @@ describe('DATA handling process', () => {
         await channel.purgeQueue(config.get('queues.data'));
         const executorQueueStatus = await channel.checkQueue(config.get('queues.data'));
         executorQueueStatus.messageCount.should.equal(0);
-
-        if (!nock.isDone()) {
-            throw new Error(`Not all nock interceptors were used: ${nock.pendingMocks()}`);
-        }
     });
 
     after(async () => {

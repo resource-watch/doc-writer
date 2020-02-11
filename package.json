@@ -42,8 +42,7 @@
     "load-grunt-tasks": "^5.1.0",
     "mocha": "^6.2.1",
     "nock": "^11.4.0",
-    "nodemon": "^1.19.3",
-    "sleep": "^6.1.0"
+    "nodemon": "^1.19.3"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^5.6.18",
@@ -53,7 +52,8 @@
     "config": "^1.21.0",
     "koa": "^2.11.0",
     "koa-simple-healthcheck": "^0.0.1",
-    "rw-doc-importer-messages": "^1.2.2"
+    "rw-doc-importer-messages": "^1.2.2",
+    "sleep": "^6.1.0"
   },
   "husky": {
     "hooks": {

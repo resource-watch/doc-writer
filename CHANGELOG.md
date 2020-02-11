@@ -1,3 +1,7 @@
+## 11/02/2020
+- Streamline queue connection with other rabbitmq services
+- Streamline tests
+
 # v1.0.0
 
 ## 14/11/2019
