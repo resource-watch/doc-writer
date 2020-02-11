@@ -2,18 +2,18 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    name: {name}
-  name: {name}
+    name: doc-writer
+  name: doc-writer
 spec:
   revisionHistoryLimit: 0
   template:
     metadata:
       labels:
-        name: {name}
+        name: doc-writer
     spec:
       containers:
-      - name: {name}
-        image: vizzuality/{name}
+      - name: doc-writer
+        image: vizzuality/doc-writer
         imagePullPolicy: Always
         resources:
           requests:
