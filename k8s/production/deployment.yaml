@@ -2,14 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-<<<<<<< HEAD
     name: doc-writer
   name: doc-writer
-=======
-    name: {name}
-    app: rw
-  name: {name}
->>>>>>> master
 spec:
   revisionHistoryLimit: 2
   template:
