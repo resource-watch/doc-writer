@@ -1,6 +1,6 @@
 ## 06/05/2020
 
-- Capture additional details from write process into task logs. 
+- Capture additional details from write process into task logs.
 
 
 # 1.1.0

@@ -237,6 +237,8 @@ describe('DATA handling process', () => {
                 itemsWithError: []
             });
             content.should.have.property('taskId').and.equal(message.taskId);
+            content.should.have.property('hash').and.be.a('string');
+            content.should.have.property('file').and.equal(message.file);
             content.should.have.property('withErrors').and.equal(false);
 
             await channel.ack(msg);
@@ -425,6 +427,8 @@ describe('DATA handling process', () => {
                 ]
             });
             content.should.have.property('taskId').and.equal(message.taskId);
+            content.should.have.property('hash').and.be.a('string');
+            content.should.have.property('file').and.equal(message.file);
             content.should.have.property('withErrors').and.equal(false);
 
             await channel.ack(msg);

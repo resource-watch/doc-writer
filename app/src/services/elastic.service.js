@@ -2,6 +2,7 @@ const logger = require('logger');
 const { Client } = require('@elastic/elasticsearch');
 const config = require('config');
 const ElasticError = require('errors/elastic.error');
+const crypto = require('crypto');
 
 const elasticUrl = config.get('elastic.url');
 
@@ -46,6 +47,7 @@ class ElasticService {
             logger.debug('Sending data to Elasticsearch');
             this.client.bulk({ body: data, timeout: '90s' }, (err, res) => {
                 let detail;
+                const hash = crypto.createHash('sha1').update(JSON.stringify(data)).digest('base64');
                 const itemsResults = {};
 
                 if (err) {
@@ -76,7 +78,8 @@ class ElasticService {
 
                 resolve({
                     withErrors: res.errors || false,
-                    detail
+                    detail,
+                    hash
                 });
             });
         });

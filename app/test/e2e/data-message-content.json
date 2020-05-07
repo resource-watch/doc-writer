@@ -521,5 +521,6 @@
       }
     }
   ],
-  "index": "index_e447128aa229430cbddef8c1adece5c2_1553581674433"
+  "index": "index_e447128aa229430cbddef8c1adece5c2_1553581674433",
+  "file": "https://file.com/foo.json"
 }

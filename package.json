@@ -52,7 +52,7 @@
     "config": "^1.21.0",
     "koa": "^2.11.0",
     "koa-simple-healthcheck": "^0.0.1",
-    "rw-doc-importer-messages": "^1.2.2",
+    "rw-doc-importer-messages": "^1.4.1",
     "sleep": "^6.1.0"
   },
   "husky": {
