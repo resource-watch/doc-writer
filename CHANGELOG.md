@@ -1,3 +1,7 @@
+## 17/07/2020
+
+- Migrate to Elasticsearch 7.x
+
 ## 06/05/2020
 
 - Capture additional details from write process into task logs.
