@@ -8,13 +8,5 @@ spec:
     apiVersion: apps/v1beta1
     kind: Deployment
     name: doc-writer
-  minReplicas: 1
-  maxReplicas: 6
-  metrics:
-    - type: External
-      external:
-        metricName: "custom.googleapis.com|rabbitmq_queue_messages_ready"
-        metricSelector:
-          matchLabels:
-            metric.labels.queue: DOC-DATA
-        targetAverageValue: 10
+  minReplicas: 4
+  maxReplicas: 4

@@ -66,13 +66,15 @@ class StatusQueueService {
         });
     }
 
-    async sendWriteCorrect(taskId, index, withErrors, detail) {
-        logger.debug('Sending write correct message of taskId', taskId, index, withErrors, detail);
+    async sendWriteCorrect(taskId, index, withErrors, detail, hash, file) {
+        logger.debug('Sending write correct message of taskId', taskId, index, withErrors, detail, hash, file);
         await this.sendMessage(docImporter.status.createMessage(docImporter.status.MESSAGE_TYPES.STATUS_WRITTEN_DATA, {
             taskId,
             index,
             withErrors,
-            detail
+            detail,
+            hash,
+            file
         }));
     }
 

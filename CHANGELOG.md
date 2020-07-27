@@ -1,3 +1,10 @@
+# v1.1.1
+
+## 13/07/2020
+
+- Security updates to the `handlebars` and `websocket-extensions` NPM packages.
+- Capture additional details from write process into task logs.
+
 # 1.1.0
 
 ## 09/04/2020
@@ -16,6 +23,6 @@
 - Added liveliness and readiness probes to k8s config
 - CS formatting to match ESLint rules
 - Update ESLint packages and config
-- Added hook to validate ESLint on commit 
+- Added hook to validate ESLint on commit
 - Update node version to 12.x
 - Replace npm with yarn
