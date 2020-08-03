@@ -11,7 +11,7 @@ exports.getTestServer = function getTestServer() {
         return requester;
     }
 
-    nock(`http://${process.env.ELASTIC_URL}`)
+    nock(process.env.ELASTIC_URL)
         .persist()
         .head('/')
         .reply(200);

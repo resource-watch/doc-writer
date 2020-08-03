@@ -203,12 +203,12 @@ describe('DATA handling process', () => {
             }]
         };
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(process.env.ELASTIC_URL)
             .persist()
             .head('/index_e447128aa229430cbddef8c1adece5c2_1553581674433')
             .reply(200);
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(process.env.ELASTIC_URL)
             .post('/_bulk?timeout=90s', fs.readFileSync(path.join(__dirname, 'elasticsearch-bulk.txt')).toString())
             .reply(200, bulkResponse);
 
@@ -376,11 +376,11 @@ describe('DATA handling process', () => {
             }]
         };
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(process.env.ELASTIC_URL)
             .head('/index_e447128aa229430cbddef8c1adece5c2_1553581674433')
             .reply(200);
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(process.env.ELASTIC_URL)
             .post('/_bulk?timeout=90s', fs.readFileSync(path.join(__dirname, 'elasticsearch-bulk.txt')).toString())
             .reply(200, bulkResponse);
 

@@ -9,9 +9,9 @@ const elasticUrl = config.get('elastic.url');
 class ElasticService {
 
     constructor() {
-        logger.info(`Connecting to Elasticsearch on http://${elasticUrl}`);
+        logger.info(`Connecting to Elasticsearch on ${elasticUrl}`);
         this.client = new Client({
-            node: `http://${elasticUrl}`,
+            node: elasticUrl,
             log: 'error'
         });
         setInterval(() => {
