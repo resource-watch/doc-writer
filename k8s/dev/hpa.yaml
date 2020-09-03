@@ -1,0 +1,12 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: doc-writer
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: doc-writer
+  minReplicas: 4
+  maxReplicas: 4
