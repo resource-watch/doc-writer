@@ -1,3 +1,5 @@
+# 2.0.0
+
 ## 17/07/2020
 
 - Migrate to Elasticsearch 7.x
