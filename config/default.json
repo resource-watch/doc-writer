@@ -8,6 +8,11 @@
   "service": {
     "name": "Doc Writer"
   },
+  "elasticsearch": {
+    "host": "localhost",
+    "user": null,
+    "password": null
+  },
   "queues": {
     "data": "DOC-DATA",
     "status": "DOC-STATUS"
