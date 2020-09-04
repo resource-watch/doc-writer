@@ -47,6 +47,16 @@ spec:
             secretKeyRef:
               key: ELASTIC_URL
               name: dbsecrets
+        - name: ELASTIC_USER
+          valueFrom:
+            secretKeyRef:
+              key: ELASTIC_USER
+              name: dbsecrets
+        - name: ELASTIC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: ELASTIC_PASSWORD
+              name: dbsecrets
         - name: RABBITMQ_URL
           valueFrom:
             secretKeyRef:
