@@ -1,6 +1,7 @@
 const nock = require('nock');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const config = require('config');
 
 let requester;
 
@@ -11,7 +12,7 @@ exports.getTestServer = function getTestServer() {
         return requester;
     }
 
-    nock(`http://${process.env.ELASTIC_URL}`)
+    nock(config.get('elasticsearch.host'))
         .persist()
         .head('/')
         .reply(200);

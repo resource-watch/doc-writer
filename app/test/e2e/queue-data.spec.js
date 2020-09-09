@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars,no-undef,no-await-in-loop */
 const nock = require('nock');
 const chai = require('chai');
-const amqp = require('amqplib');
 const config = require('config');
+const amqp = require('amqplib');
 const RabbitMQConnectionError = require('errors/rabbitmq-connection.error');
 const docImporterMessages = require('rw-doc-importer-messages');
 const fs = require('fs');
@@ -203,12 +203,12 @@ describe('DATA handling process', () => {
             }]
         };
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(config.get('elasticsearch.host'))
             .persist()
             .head('/index_e447128aa229430cbddef8c1adece5c2_1553581674433')
             .reply(200);
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(config.get('elasticsearch.host'))
             .post('/_bulk?timeout=90s', fs.readFileSync(path.join(__dirname, 'elasticsearch-bulk.txt')).toString())
             .reply(200, bulkResponse);
 
@@ -376,11 +376,11 @@ describe('DATA handling process', () => {
             }]
         };
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(config.get('elasticsearch.host'))
             .head('/index_e447128aa229430cbddef8c1adece5c2_1553581674433')
             .reply(200);
 
-        nock(`http://${process.env.ELASTIC_URL}`)
+        nock(config.get('elasticsearch.host'))
             .post('/_bulk?timeout=90s', fs.readFileSync(path.join(__dirname, 'elasticsearch-bulk.txt')).toString())
             .reply(200, bulkResponse);
 
@@ -458,7 +458,7 @@ describe('DATA handling process', () => {
         const dataQueueStatus = await channel.checkQueue(config.get('queues.data'));
         dataQueueStatus.messageCount.should.equal(0);
 
-        if (!nock.pendingMocks().filter(elem => elem !== `HEAD http://${process.env.ELASTIC_URL}`)) {
+        if (!nock.pendingMocks().filter(elem => elem !== `HEAD ${config.get('elasticsearch.host')}`)) {
             throw new Error(`Not all nock interceptors were used: ${nock.pendingMocks()}`);
         }
 

@@ -4,16 +4,26 @@ const config = require('config');
 const ElasticError = require('errors/elastic.error');
 const crypto = require('crypto');
 
-const elasticUrl = config.get('elastic.url');
+const elasticUrl = config.get('elasticsearch.host');
 
 class ElasticService {
 
     constructor() {
-        logger.info(`Connecting to Elasticsearch on http://${elasticUrl}`);
-        this.client = new Client({
-            node: `http://${elasticUrl}`,
-            log: 'error'
-        });
+        logger.info(`Connecting to Elasticsearch at ${elasticUrl}`);
+
+        const elasticSearchConfig = {
+            node: elasticUrl
+        };
+
+        if (config.get('elasticsearch.user') && config.get('elasticsearch.password')) {
+            elasticSearchConfig.auth = {
+                username: config.get('elasticsearch.user'),
+                password: config.get('elasticsearch.password')
+            };
+        }
+
+        this.client = new Client(elasticSearchConfig);
+
         setInterval(() => {
             this.client.ping({}, (error) => {
                 if (error) {
