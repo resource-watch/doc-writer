@@ -84,7 +84,6 @@ class ElasticService {
                 if (err) {
                     logger.error(err);
                     logger.debug(JSON.stringify(err));
-                    logger.debug(data);
                     reject(new ElasticError(err));
                     return;
                 }
