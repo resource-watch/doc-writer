@@ -40,6 +40,8 @@ spec:
           value: "7400"
         - name: NODE_ENV
           value: prod
+        - name: LOGGER_LEVEL
+          value: debug
         - name: NODE_PATH
           value: app/src
         - name: ELASTIC_URL
