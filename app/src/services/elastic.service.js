@@ -83,8 +83,8 @@ class ElasticService {
                 }
 
                 let itemWithError = null;
-                if (res.errors) {
-                    itemWithError = res.items.find(item => item && item.index && item.index.status === 400);
+                if (res.body.errors) {
+                    itemWithError = res.body.items.find(item => item && item.index && item.index.status === 400);
                     detail = JSON.stringify(itemWithError.index.error);
                 } else {
                     res.body.items.forEach((item) => {
@@ -103,7 +103,7 @@ class ElasticService {
                 }
 
                 resolve({
-                    withErrors: res.errors || false,
+                    withErrors: res.body.errors || false,
                     detail,
                     hash
                 });
