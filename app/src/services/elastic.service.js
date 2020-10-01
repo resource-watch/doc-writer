@@ -56,21 +56,6 @@ class ElasticService {
         return new Promise((resolve, reject) => {
             logger.debug('Sending data to Elasticsearch');
 
-            // Temporary workaround for ES6
-            // eslint-disable-next-line no-param-reassign
-            data = data.map((elem, index) => {
-                if (!(index % 2) && Object.prototype.hasOwnProperty.call(elem.index, '_index') && !Object.prototype.hasOwnProperty.call(elem.index, '_type')) {
-                    return {
-                        index: {
-                            ...elem.index,
-                            _type: 'type'
-                        },
-                    };
-                }
-
-                return elem;
-            });
-
             this.client.bulk({ body: data, timeout: '90s' }, (err, res) => {
                 let detail;
                 const hash = crypto.createHash('sha1').update(JSON.stringify(data)).digest('base64');
