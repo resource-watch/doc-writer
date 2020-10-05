@@ -12,7 +12,10 @@ env:
   global:
     - CC_TEST_REPORTER_ID=b20424bf38e9d64206d37fc2633b573f696f7b7e423cee11d241ec12a2bf27cc
     - NODE_ENV=test
-    - ELASTIC_URL=http://127.0.0.1:9000
+    - PORT=7400
+    - API_VERSION=v1
+    - LOCAL_URL=http://127.0.0.1:7400
+    - CT_URL=http://127.0.0.1:9000
     - RABBITMQ_URL=amqp://0.0.0.0:5672
     - HOST_IP=127.0.0.1
     - NODE_TLS_REJECT_UNAUTHORIZED=0
