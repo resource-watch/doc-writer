@@ -3,6 +3,7 @@ const { Client } = require('@elastic/elasticsearch');
 const config = require('config');
 const ElasticError = require('errors/elastic.error');
 const crypto = require('crypto');
+const sleep = require('sleep');
 
 const elasticUrl = config.get('elasticsearch.host');
 
@@ -22,10 +23,40 @@ class ElasticService {
             };
         }
 
-        this.client = new Client(elasticSearchConfig);
+        this.elasticClient = new Client(elasticSearchConfig);
+
+        let retries = 10;
+
+        const pingES = () => {
+            this.elasticClient.ping({}, (error) => {
+                if (error) {
+                    if (retries >= 0) {
+                        retries--;
+                        logger.error(`Elasticsearch cluster is down, attempt #${10 - retries} ... - ${error.message}`);
+                        sleep.sleep(5);
+                        pingES();
+                    } else {
+                        logger.error(`Elasticsearch cluster is down, baiging! - ${error.message}`);
+                        logger.error(error);
+                        throw new Error(error);
+                    }
+                } else {
+                    setInterval(() => {
+                        this.elasticClient.ping({}, (error) => {
+                            if (error) {
+                                logger.error(`Elasticsearch cluster is down! - ${error.message}`);
+                                process.exit(1);
+                            }
+                        });
+                    }, 3000);
+                }
+            });
+        };
+
+        pingES();
 
         setInterval(() => {
-            this.client.ping({}, (error) => {
+            this.elasticClient.ping({}, (error) => {
                 if (error) {
                     logger.error(error);
                     logger.error('Elasticsearch cluster is down!');
@@ -39,7 +70,7 @@ class ElasticService {
 
         const exists = await new Promise((resolve, reject) => {
             logger.debug(`Checking if index ${index} exists`);
-            this.client.indices.exists({ index }, (err, res) => {
+            this.elasticClient.indices.exists({ index }, (err, res) => {
                 logger.debug('Response', res);
                 if (err) {
                     logger.error(err);
@@ -56,7 +87,7 @@ class ElasticService {
         return new Promise((resolve, reject) => {
             logger.debug('Sending data to Elasticsearch');
 
-            this.client.bulk({ body: data, timeout: '90s' }, (err, res) => {
+            this.elasticClient.bulk({ body: data, timeout: '90s' }, (err, res) => {
                 const hash = crypto.createHash('sha1').update(JSON.stringify(data)).digest('base64');
                 const itemsResults = {};
 
