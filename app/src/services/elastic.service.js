@@ -57,7 +57,6 @@ class ElasticService {
             logger.debug('Sending data to Elasticsearch');
 
             this.client.bulk({ body: data, timeout: '90s' }, (err, res) => {
-                let detail;
                 const hash = crypto.createHash('sha1').update(JSON.stringify(data)).digest('base64');
                 const itemsResults = {};
 
@@ -67,25 +66,26 @@ class ElasticService {
                     return;
                 }
 
-                let itemWithError = null;
-                if (res.body.errors) {
-                    itemWithError = res.body.items.find(item => item && item.index && item.index.status === 400);
-                    detail = JSON.stringify(itemWithError.index.error);
-                } else {
-                    res.body.items.forEach((item) => {
+                res.body.items.forEach((item) => {
+                    if (item.index.result) {
                         if (!Object.prototype.hasOwnProperty.call(itemsResults, item.index.result)) {
                             itemsResults[item.index.result] = 0;
                         }
                         itemsResults[item.index.result] += 1;
-                    });
+                    } else if (item.index.error) {
+                        if (!itemsResults.error) {
+                            itemsResults.error = 0;
+                        }
+                        itemsResults.error += 1;
+                    }
+                });
 
-                    detail = {
-                        took: res.body.took,
-                        errors: res.body.errors,
-                        itemsResults,
-                        itemsWithError: res.body.items.filter(item => item.index.status >= 400)
-                    };
-                }
+                const detail = {
+                    took: res.body.took,
+                    errors: res.body.errors,
+                    itemsResults,
+                    itemsWithError: res.body.items.filter((item) => item.index.status >= 400)
+                };
 
                 resolve({
                     withErrors: res.body.errors || false,

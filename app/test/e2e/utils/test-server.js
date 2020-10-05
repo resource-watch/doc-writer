@@ -12,12 +12,11 @@ exports.getTestServer = function getTestServer() {
         return requester;
     }
 
-    nock(config.get('elasticsearch.host'))
-        .persist()
-        .head('/')
-        .reply(200);
+    const elasticUri = config.get('elasticsearch.host');
 
-    const server = require('../../src/app');
+    nock(elasticUri, { allowUnmocked: true });
+
+    const server = require('../../../src/app');
     requester = chai.request(server).keepOpen();
 
     return requester;
