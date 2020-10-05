@@ -54,16 +54,6 @@ class ElasticService {
         };
 
         pingES();
-
-        setInterval(() => {
-            this.elasticClient.ping({}, (error) => {
-                if (error) {
-                    logger.error(error);
-                    logger.error('Elasticsearch cluster is down!');
-                    process.exit(1);
-                }
-            });
-        }, 3000);
     }
 
     async saveBulk(index, data) {
