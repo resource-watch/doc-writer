@@ -17,6 +17,7 @@ services:
     command: test
     depends_on:
       - rabbitmq
+      - opendistro
 
   rabbitmq:
     image: rabbitmq
