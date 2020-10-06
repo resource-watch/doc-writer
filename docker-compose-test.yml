@@ -24,7 +24,7 @@ services:
       - "5672"
 
   opendistro:
-    container_name: opendistro
+    container_name: opendistro-doc-writer-test
     image: amazon/opendistro-for-elasticsearch:1.10.1
     environment:
       discovery.type: single-node
