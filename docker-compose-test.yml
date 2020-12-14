@@ -14,6 +14,8 @@ services:
       ELASTIC_TEST_URL: opendistro:9200
       ELASTIC_USER: admin
       ELASTIC_PASSWORD: admin
+      CT_TOKEN: cttoken
+      LOCAL_URL: http://doc-orchestrator.default.svc.cluster.local:5000
     command: test
     depends_on:
       - rabbitmq
