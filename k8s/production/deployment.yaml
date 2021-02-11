@@ -64,7 +64,7 @@ spec:
             secretKeyRef:
               key: RABBITMQ_URI
               name: dbsecrets
-        image: vizzuality/doc-writer
+        image: gfwdockerhub/doc-writer
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
